@@ -16,6 +16,11 @@ class MvcDispatcher {
         $controller->action = $action;
         $controller->init();
         
+        // Methods that begin with '_' are not indented to be actions.
+        if (strpos($action, '_') === 0) {
+            MvcError::fatal('Invalid action "'.$action.'" for "'.$controller_class.'"');
+        }
+
         if (!method_exists($controller, $action)) {
             MvcError::fatal('A method for the action "'.$action.'" doesn\'t exist in "'.$controller_class.'"');
         }
