@@ -70,7 +70,10 @@ class MvcDispatcher {
         $controller->after_action($action);
         
         if (!$controller->view_rendered) {
-            $controller->render_view($controller->views_path.$action, $options);
+            $view = $controller->get_view_to_render();
+            $options = $controller->get_view_options($options);
+
+            $controller->render_view($view, $options);
         }
         
         return $response;

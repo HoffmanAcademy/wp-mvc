@@ -11,6 +11,9 @@ class MvcController {
     public $params = null;
     public $view_rendered = false;
     public $view_vars = array();
+
+    private $view_to_render = null;
+    private $view_options = null;
     
     function __construct() {
     
@@ -359,6 +362,39 @@ class MvcController {
         return $_SERVER['REQUEST_URI'];
     }
 
+    /**
+     * Lets the controller specify a different view to render without having to use {@link render_view}, which will
+     * die() before the 'after's are called.
+     *
+     * @param string $view the view to render instead of the default
+     * @param array $options optional values to override the default options
+     */
+    protected function set_view($view, $options = null) {
+        $this->view_to_render = $view;
+        $this->view_options = $options;
+    }
+
+    public function get_view_to_render() {
+        if (isset($this->view_to_render)) {
+            return $this->view_to_render;
+        } else {
+            return $this->views_path.$this->action;
+        }
+    }
+
+    /**
+     * Lets the controller override the options that will be passed to the {@link render_view} method during dispatch
+     *
+     * @param array $options the original options that may get overridden (but combined with the controller's options)
+     * @return array an arrray of the combined options
+     */
+    public function get_view_options($options) {
+        if (isset($this->view_options) && is_array($this->view_options)) {
+            return array_merge($options, $this->view_options);
+        } else {
+            return $options;
+        }
+    }
 }
 
 ?>
