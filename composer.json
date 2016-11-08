@@ -1,16 +1,21 @@
 {
-    "name": "tombenner/wp-mvc",
+    "name": "jigawot/wp-mvc",
     "description": "An MVC framework for WordPress http://wpmvc.org",
     "type": "wordpress-plugin",
     "dist": {
-      "url": "https://github.com/tombenner/wp-mvc.git",
+      "url": "https://github.com/jigawot/wp-mvc.git",
       "type": "git"
     },
     "license": "GPL",
     "authors": [
         {
             "name": "Tom Benner",
-            "email": "tombenner@gmail.com"
+            "email": "tombenner@gmail.com",
+            "homepage": "https://github.com/tombenner/wp-mvc"
+        },
+        {
+            "name": "James Hoffman",
+            "email": "github@jigawot.com"
         }
     ]
 }
