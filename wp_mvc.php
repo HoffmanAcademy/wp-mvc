@@ -44,25 +44,3 @@ function wp_mvc_load_global_functionality(&$loader) { //public or admin, dependi
     add_action('widgets_init', array($loader, 'register_widgets'));
     add_filter('post_type_link', array($loader, 'filter_post_link'), 10, 2);
 }
-
-
-/*
- * Make it so the template_include filter is only valid the first time.  This ensures that after
- * the MVC Controller is done rendering, the regular templating doesn't render again.  The vanilla
- * MVC plugin uses die(), but this makes it untestable.  Therefore, I've modified the plugin to
- * _not_ die and keep going, but then our theme renders the main index.php template, which is wrong.
- *
- * Generally, 'template_include' should only ever get run once, so the second time, hijack it and
- * prevent any rendering.
- */
-add_filter('template_include', function ($template) {
-	global $mvc_already_rendered;
-
-	if (!isset($mvc_already_rendered)) {
-		$mvc_already_rendered = true;
-
-		return $template;
-	} else {
-		return false;
-	}
-} );

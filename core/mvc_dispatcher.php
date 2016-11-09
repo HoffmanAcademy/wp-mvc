@@ -14,6 +14,11 @@ class MvcDispatcher {
         
         $controller->name = $controller_name;
         $controller->action = $action;
+
+        if (isset($options['should_die'])) {
+            $controller->should_die = $options['should_die'];
+        }
+
         $controller->init();
         
         // Methods that begin with '_' are not indented to be actions.
