@@ -36,7 +36,7 @@ class MvcDatabaseAdapter {
     }
     
     public function get_table_reference_sql($options=array()) {
-        $table_reference = empty($options['table_reference']) ? $this->defaults['table_reference'] : $options['table_reference'];
+        $table_reference = array_key_exists('table_reference', $options) ? $options['table_reference'] : $this->defaults['table_reference'];
         $table_alias = !isset($options['table_alias']) ? ' `'.$this->defaults['model_name'].'`' : $options['table_alias'];
         return $table_reference.$table_alias;
     }
@@ -56,7 +56,7 @@ class MvcDatabaseAdapter {
     }
     
     public function get_select_sql($options=array()) {
-        $selects = empty($options['selects']) ? $this->defaults['selects'] : $options['selects'];
+        $selects = array_key_exists('selects', $options) ? $options['selects'] : $this->defaults['selects'] ;
         if (!empty($options['additional_selects'])) {
             $selects = array_merge($this->defaults['selects'], $options['additional_selects']);
         }
@@ -64,7 +64,7 @@ class MvcDatabaseAdapter {
     }
     
     public function get_joins_sql($options=array()) {
-        $joins = empty($options['joins']) ? $this->defaults['joins'] : $options['joins'];
+        $joins = array_key_exists('joins', $options) ? $options['joins'] : $this->defaults['joins'];
         if (empty($joins)) {
             return '';
         }
@@ -80,7 +80,7 @@ class MvcDatabaseAdapter {
     }
     
     public function get_where_sql($options=array()) {
-        $conditions = empty($options['conditions']) ? $this->defaults['conditions'] : $options['conditions'];
+        $conditions = array_key_exists('conditions', $options) ? $options['conditions'] : $this->defaults['conditions'] ;
         if (empty($conditions)) {
             return '';
         }
@@ -145,7 +145,7 @@ class MvcDatabaseAdapter {
     }
     
     public function get_order_sql($options=array()) {
-        $order = empty($options['order']) ? $this->defaults['order'] : $options['order'];
+        $order = array_key_exists('order', $options) ? $options['order'] : $this->defaults['order'];
         return $order ? 'ORDER BY '.$this->escape($order) : '';
     }
     
@@ -156,7 +156,7 @@ class MvcDatabaseAdapter {
             $offset = ($page - 1) * $per_page;
             return 'LIMIT '.$this->escape($offset).', '.$this->escape($per_page);
         }
-        $limit = empty($options['limit']) ? $this->defaults['limit'] : $options['limit'];
+        $limit = array_key_exists('limit', $options) ? $options['limit'] : $this->defaults['limit'];
         return $limit ? 'LIMIT '.$this->escape($limit) : '';
     }
     
