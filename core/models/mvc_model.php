@@ -207,8 +207,8 @@ class MvcModel {
         }
         if (!empty($objects)) {
             foreach ($this->associations as $association) {
-                if ($association['dependent']) {
-                    if ($association['type'] == 'has_many') {
+                if ($association['type'] == 'has_many') {
+                    if ($association['dependent']) {
                         $model = MvcModelRegistry::get_model($association['class']);
                         foreach ($objects as $object) {
                             $options = array(
@@ -216,6 +216,15 @@ class MvcModel {
                             );
                             $model->delete_all($options);
                         }
+                    }
+                } else if ($association['type'] == 'has_and_belongs_to_many') {
+                    // has_and_belongs_to_many are always considered "dependent"
+                    foreach ($objects as $object) {
+                        $object_id = $object->{$this->primary_key};
+                        $this->db_adapter->delete_all( array(
+                            'table_reference' => self::process_table_name( $association['join_table'] ),
+                            'conditions'      => array( $association['foreign_key'] => $object_id )
+                        ) );
                     }
                 }
             }
