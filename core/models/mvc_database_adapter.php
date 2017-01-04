@@ -164,10 +164,10 @@ class MvcDatabaseAdapter {
         $clauses = array();
         foreach ($data as $key => $value) {
             if ($value == null) {
-                $clauses[] = $key.' = NULL';
+                $clauses[] = '`' . $key . '` = NULL';
             }
             else if (is_string($value) || is_numeric($value)) {
-                $clauses[] = $key . ' = "' . $this->escape($value) . '"';
+                $clauses[] = '`' . $key . '` = "' . $this->escape($value) . '"';
             }            
         }
         $sql = implode(', ', $clauses);
@@ -177,7 +177,7 @@ class MvcDatabaseAdapter {
     public function get_insert_columns_sql($data) {
         $columns = array_keys($data);
         $columns = $this->db->escape_array($columns);
-        $sql = '('.implode(', ', $columns).')';
+        $sql = '(`'.implode('`, `', $columns).'`)';
         return $sql;
     }
     
