@@ -11,7 +11,10 @@ class MvcDispatcher {
         $controller_class = MvcInflector::camelize($controller_name).'Controller';
         
         $controller = new $controller_class();
-        
+
+        // Kebab-case is so much prettier, so convert all _s to -s
+        $action = str_replace('-', '_', $action);
+
         $controller->name = $controller_name;
         $controller->action = $action;
 
