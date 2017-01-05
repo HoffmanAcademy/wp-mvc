@@ -13,7 +13,14 @@ class MvcDispatcher {
         $controller = new $controller_class();
 
         // Kebab-case is so much prettier, so convert all _s to -s
-        $action = str_replace('-', '_', $action);
+        if (MvcConfiguration::get('disallow-underscores')) {
+            if (strpos($action, '_') !== false) {
+              throw new \Exception("Underscores found in controller action: $controller_class/$action");
+            }
+        }
+        if (MvcConfiguration::get('use-kebab-case')) {
+            $action = str_replace('-', '_', $action);
+        }
 
         $controller->name = $controller_name;
         $controller->action = $action;
