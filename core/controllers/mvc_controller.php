@@ -17,7 +17,12 @@ class MvcController {
     private $view_options = null;
     
     function __construct() {
-    
+
+        // Necessary for flash()-related functionality
+        if (session_id() == '') {
+            session_start();
+        }
+
         $this->set_meta();
         $this->file_includer = new MvcFileIncluder();
     
