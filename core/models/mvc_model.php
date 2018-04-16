@@ -18,7 +18,8 @@ class MvcModel {
     private $data_validator = null;
     protected $db_adapter = null;
     private $wp_post_adapter = null;
-    
+    private static $describe_cache = [];
+
     function __construct() {
         
         global $wpdb;
@@ -632,11 +633,13 @@ class MvcModel {
     }
     
     protected function init_schema() {
-        $sql = '
-            DESCRIBE
-                '.$this->table_reference;
-        $results = $this->db_adapter->get_results($sql);
-        
+        if ( isset( self::$describe_cache[ $this->table ] ) ) {
+            $results = self::$describe_cache[ $this->table ];
+        } else {
+            $results = $this->db_adapter->get_results( "DESCRIBE {$this->table_reference}" );
+            self::$describe_cache[ $this->table ] = $results;
+        }
+
         $schema = array();
         
         foreach ($results as $result) {
